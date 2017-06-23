@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.example.chiebuka.thebakingapp.Events.SelectedRecipeEvent
 import com.example.chiebuka.thebakingapp.R
 import com.example.chiebuka.thebakingapp.models.Recipe
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by chiebuka on 6/16/17.
@@ -40,7 +42,9 @@ class RecipeAdapter(val recipeList: ArrayList<Recipe>, val mContext: Context) :
         fun bind(recipe: Recipe){
             recipeName.setText(recipe.name)
             itemView.setOnClickListener { v ->
-                Toast.makeText(recipeName.context, "harry", Toast.LENGTH_SHORT).show() }
+                Toast.makeText(recipeName.context, "harry", Toast.LENGTH_SHORT).show()
+                EventBus.getDefault().post(SelectedRecipeEvent(recipe))
+            }
         }
 
 

@@ -2,25 +2,29 @@ package com.example.chiebuka.thebakingapp.models
 
 import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmList
+import io.realm.RealmObject
+import io.realm.annotations.RealmClass
+import java.io.Serializable
 
 @javax.annotation.Generated("com.robohorse.robopojogenerator")
-data class Recipe(
-
+@RealmClass
+open class Recipe() :Serializable, RealmObject(){
 	@field:SerializedName("image")
-	val image: String? = null,
+	var image: String? = null
 
 	@field:SerializedName("servings")
-	val servings: Int? = null,
+	var servings: Int? = null
 
 	@field:SerializedName("name")
-	val name: String? = null,
+	var name: String? = null
 
 	@field:SerializedName("ingredients")
-	val ingredients: List<IngredientsItem?>? = null,
+	var ingredients: RealmList<IngredientsItem?>? = null
 
 	@field:SerializedName("id")
-	val id: Int? = null,
+	var id: Int? = null
 
 	@field:SerializedName("steps")
-	val steps: List<StepsItem?>? = null
-)
+	var steps: RealmList<StepsItem?>? = null
+}

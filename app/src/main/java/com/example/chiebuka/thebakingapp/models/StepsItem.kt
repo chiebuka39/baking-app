@@ -2,22 +2,26 @@ package com.example.chiebuka.thebakingapp.models
 
 import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
+import io.realm.annotations.RealmClass
+import java.io.Serializable
 
 @Generated("com.robohorse.robopojogenerator")
-data class StepsItem(
+@RealmClass
+open class StepsItem() : Serializable, RealmObject(){
 
 	@field:SerializedName("videoURL")
-	val videoURL: String? = null,
+	var videoURL: String? = null
 
 	@field:SerializedName("description")
-	val description: String? = null,
+	var description: String? = null
 
 	@field:SerializedName("id")
-	val id: Int? = null,
+	var id: Int? = null
 
 	@field:SerializedName("shortDescription")
-	val shortDescription: String? = null,
+	var shortDescription: String? = null
 
 	@field:SerializedName("thumbnailURL")
-	val thumbnailURL: String? = null
-)
+	var thumbnailURL: String? = null
+}

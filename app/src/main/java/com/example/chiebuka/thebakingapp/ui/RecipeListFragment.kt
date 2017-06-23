@@ -26,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.RealmList
+import org.greenrobot.eventbus.EventBus
 
 
 /**
@@ -40,6 +41,8 @@ class RecipeListFragment : Fragment() {
     var prefs :SharedPreferences? = null
 
 
+
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -50,16 +53,20 @@ class RecipeListFragment : Fragment() {
 
         val repository = RepositoryProvider.provideReposotory()
 
-        val recipes : List<RecipeRealm>
+        val recipes : List<Recipe>
 
         prefs = activity.getSharedPreferences(PREFS_FILENAME, 0)
         val firstLoad = prefs!!.getBoolean(FIRST_LOAD, true)
 
         when(firstLoad){
             false ->{
-                Log.v("Result", "false")
-                recipes = RecipeRealm().queryAll()
-                Log.v("Result", ""+recipes.size)
+                recipes = Recipe().queryAll()
+                val adapter = RecipeAdapter(recipes as ArrayList<Recipe>,activity)
+                recycler.adapter = adapter
+                recycler.layoutManager = LinearLayoutManager(activity)
+                recycler.setHasFixedSize(true)
+                Log.v("RESULT2", recipes.get(0).name)
+
 
             }
             true ->
@@ -74,7 +81,7 @@ class RecipeListFragment : Fragment() {
                                 .subscribe({
                                     result ->
                                     displayProgress(false, recycler,progress)
-                                    saveRecipes(result)
+                                    result.saveAll()
                                     val adapter = RecipeAdapter(result, activity)
                                     recycler.adapter = adapter
                                     recycler.layoutManager = LinearLayoutManager(activity)
@@ -93,8 +100,18 @@ class RecipeListFragment : Fragment() {
         return view;
     }
 
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+    }
+
     // TODO: do this on a background thread
-    fun saveRecipes(recipes: ArrayList<Recipe>):ArrayList<RecipeRealm>{
+    /*fun saveRecipes(recipes: ArrayList<Recipe>):ArrayList<RecipeRealm>{
         val recipe: ArrayList<RecipeRealm> = arrayListOf()
 
         recipes.forEach({r ->
@@ -113,7 +130,7 @@ class RecipeListFragment : Fragment() {
 
         recipe.saveAll()
         return recipe
-    }
+    }*/
 
     fun displayProgress(display: Boolean, recycler: RecyclerView, progress : ProgressBar){
         when(display){
