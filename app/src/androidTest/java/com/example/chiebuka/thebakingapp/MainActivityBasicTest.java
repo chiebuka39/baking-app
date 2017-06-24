@@ -27,10 +27,23 @@ public class MainActivityBasicTest {
 
     @Test
     public void fragment_can_be_instantiated() {
-
-
+        mActivityTextRule.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                RecipeListFragment recipeListFragment = startRecipeListFragment();
+            }
+        });
+        // Then use Espresso to test the Fragment
+        onView(withId(R.id.recipeName)).check(matches(isDisplayed()));
     }
 
 
-
+    private RecipeListFragment startRecipeListFragment() {
+        MainActivity activity = (MainActivity) mActivityTextRule.getActivity();
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        RecipeListFragment recipeListFragment = new RecipeListFragment();
+        transaction.add(recipeListFragment, "recipe");
+        transaction.commit();
+        return recipeListFragment;
+    }
 }
