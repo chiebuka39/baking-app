@@ -4,6 +4,7 @@ package com.example.chiebuka.thebakingapp.ui.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.example.chiebuka.thebakingapp.Events.SelectedRecipeEvent
@@ -25,9 +26,16 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, RecipeListFragment())
-                .commit()
+        if(findViewById(R.id.container) != null){
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, RecipeListFragment())
+                    .commit()
+        }else if(findViewById(R.id.multipane_container) != null){
+            Log.v("MULTIPANE", "multipane")
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.recipe_list_container, RecipeListFragment())
+                    .commit()
+        }
 
     }
 
@@ -44,9 +52,17 @@ class MainActivity : AppCompatActivity() {
     @Subscribe
     fun onSelectedRecipeEvent(e : SelectedRecipeEvent){
         val re = e.recipe.name?.let { RecipeDetailFragment.newInstance(it) }
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, re)
-                .commit()
+
+        if(findViewById(R.id.container) != null){
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, re)
+                    .commit()
+        }else if(findViewById(R.id.multipane_container) != null){
+            Log.v("MULTIPANE", "multipane2")
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.recipe_detail_container, re)
+                    .commit()
+        }
     }
 
 
